@@ -1,11 +1,12 @@
 import pygame
 import pygame.font
-
+import math
 pygame.init()
 size = (400, 400)
 screen = pygame.display.set_mode(size)
 clock = pygame.time.Clock()
-
+width = screen.get_width() / 2
+height = screen.get_height() / 2
 
 def blitRotate(surf, image, pos, originPos, angle):
     # calcaulate the axis aligned bounding box of the rotated image
@@ -17,7 +18,7 @@ def blitRotate(surf, image, pos, originPos, angle):
 
     # calculate the translation of the pivot
     pivot = pygame.math.Vector2(originPos[0], -originPos[1])
-    pivot_rotate = pivot.rotate(angle)
+    pivot_rotate = pivot.rotate(40)
     pivot_move = pivot_rotate - pivot
 
     # calculate the upper left origin of the rotated image
@@ -31,12 +32,13 @@ def blitRotate(surf, image, pos, originPos, angle):
 
 
 
-image = pygame.image.load('fishincon.png')
+image = pygame.image.load('image/icon.png')
 
 w, h = image.get_size()
 
 angle = 0
 done = False
+pos = (width, height)
 while not done:
     clock.tick(60)
     for event in pygame.event.get():
@@ -45,21 +47,26 @@ while not done:
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 done = True
-
-    pos = (screen.get_width() / 2, screen.get_height() / 2)
-    pos = (200, 200)
-
-    screen.fill(0)
-    blitRotate(screen, image, pos, (w / 2, h / 2), angle)
     if event.type == pygame.KEYDOWN:
         if event.key == ord('a'):
             angle = angle + 10
         if event.key == ord('w'):
-            angle = angle
+            print(math.sin(angle))
+            if math.sin(angle) > 0:
+                width = width * (1 - math.sin(angle)/100)
+                height = height * (1 + math.cos(angle)/100)
+            elif math.cos(angle) < 0:
+                width = width * (1 + math.sin(angle) / 100)
+                height = height * (1 - math.cos(angle) / 100)
         if event.key == ord('d'):
             angle = angle - 10
         if event.key == ord('s'):
-            angle = angle
+            height = (height + 1 )
+
+    pos = (width, height)
+    screen.fill(0)
+
+    blitRotate(screen, image, pos, (w / 2, h / 2), angle)
 
     pygame.display.flip()
 

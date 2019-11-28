@@ -120,6 +120,7 @@ background = pygame.transform.scale(background, (worldx, worldy), screen)
 player = Player(background, 200, 200, shark)
 
 
+
 def get_level():
     """
     Get into next level(For project 3, next level requires more score to pass.)
@@ -170,6 +171,7 @@ def game_loop():
     mx = 0
     my = 0
     speed = 3
+    global shark
 
     main = True
     while main:
@@ -192,6 +194,7 @@ def game_loop():
                     mx = -speed
                 if event.key == ord('w'):
                     my = -speed
+
                 if event.key == ord('d'):
                     mx = speed
                 if event.key == ord('s'):

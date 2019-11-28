@@ -52,7 +52,7 @@ class Player:
         """
         Renders the img of shark(For project 3, black circle stands for shark)
         """
-        pygame.draw.circle(self._master, color, (self.x, self.y), sharksize)
+        self._master.blit(self.image, (self.x, self.y))
 
     def get_center(self):
         """

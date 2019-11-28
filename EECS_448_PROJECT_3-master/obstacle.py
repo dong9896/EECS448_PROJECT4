@@ -24,7 +24,16 @@ class Obstacle:
         :return: returns none.
         :pre: After player starting move their shark
         """
+        img_path = 'image/trash.png'
         self._master = master
+        temp = random.randint(1, 3)
+        if temp == 1:
+            img_path = 'image/trash.png'
+        elif temp == 2:
+            img_path = 'image/plastic.png'
+        elif temp == 3:
+            img_path = 'image/plastic-bottle.png'
+        self.image = pygame.image.load(img_path)
         self.x = x
         self.y = y
         self.lives = 1
@@ -56,7 +65,7 @@ class Obstacle:
         :pre: after construct generate a location for obstacle
         :post: draw shape on that location
         """
-        pygame.draw.circle(self._master, color, (self.x, self.y), radius)
+        self._master.blit(self.image, (self.x, self.y))
 
     def get_center(self):
         """
