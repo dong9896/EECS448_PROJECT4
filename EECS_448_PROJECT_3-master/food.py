@@ -28,6 +28,14 @@ class Food:
         :pre: After player starting move their shark
         """
         self._master = master
+        img_path = 'image/prawn.png'
+        self.image = pygame.image.load(img_path)
+        temp = random.randint(1, 5)
+        if temp == 1:
+            img_path = 'image/crustacean.png'
+        elif temp == 2:
+            img_path = 'image/fish.png'
+        self.image = pygame.image.load(img_path)
         self.x = x
         self.y = y
         self.lives = 1
@@ -59,12 +67,13 @@ class Food:
         :pre: after construct generate a location for food
         :post: draw shape on that location
         """
-        x = self.x
-        y = self.y
-        point1 = [(x - math.sqrt(3) * size), (y - size)]
-        point2 = [(x + math.sqrt(3) * size), (y - size)]
-        point3 = [x, (y + 2 * size)]
-        pygame.draw.polygon(self._master, GREEN, [point1, point2, point3], size)
+        #x = self.x
+        #y = self.y
+        #point1 = [(x - math.sqrt(3) * size), (y - size)]
+        #point2 = [(x + math.sqrt(3) * size), (y - size)]
+        #point3 = [x, (y + 2 * size)]
+        #pygame.draw.polygon(self._master, GREEN, [point1, point2, point3], size)
+        self._master.blit(self.image, (self.x, self.y))
 
     def get_center(self):
         """

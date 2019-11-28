@@ -26,13 +26,17 @@ class Obstacle:
         """
         img_path = 'image/trash.png'
         self._master = master
-        temp = random.randint(1, 3)
+        temp = random.randint(1, 5)
         if temp == 1:
             img_path = 'image/trash.png'
         elif temp == 2:
             img_path = 'image/plastic.png'
         elif temp == 3:
             img_path = 'image/plastic-bottle.png'
+        elif temp == 4:
+            img_path = 'image/waste.png'
+        elif temp == 5:
+            img_path = 'image/plastic-bottle2.png'
         self.image = pygame.image.load(img_path)
         self.x = x
         self.y = y
