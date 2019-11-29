@@ -103,3 +103,7 @@ class Player:
                     self.lives = 1
                     self.score += 1
                     j.lives = 0
+
+    def shark(self, img_path):
+
+         self.image = pygame.image.load(img_path);

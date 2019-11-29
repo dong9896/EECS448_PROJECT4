@@ -2,6 +2,7 @@ import pygame
 import sys
 import os
 from player import Player
+from pygame.locals import  FULLSCREEN
 from obstacle import ObstacleM
 from buttom import buttom
 from food import Food_move
@@ -15,10 +16,11 @@ clock = pygame.time.Clock()
 # images
 back = 'image/backbord.jpg'
 shark = 'image/icon.png'
+shark1 = 'image/flip.png'
 intro_backg = 'image/shark.jpg'
 intro_backg2 = 'image/introb.jpeg'
 # screen set up
-screen = pygame.display.set_mode((worldx, worldy))
+screen = pygame.display.set_mode((worldx, worldy), FULLSCREEN)
 # background set up
 
 
@@ -173,6 +175,7 @@ def game_loop():
     speed = 3
     global shark
 
+
     main = True
     while main:
 
@@ -191,11 +194,13 @@ def game_loop():
                     main = False
             if event.type == pygame.KEYDOWN:
                 if event.key == ord('a'):
+                    player.shark(shark1)
                     mx = -speed
                 if event.key == ord('w'):
                     my = -speed
 
                 if event.key == ord('d'):
+                    player.shark(shark)
                     mx = speed
                 if event.key == ord('s'):
                     my = speed
