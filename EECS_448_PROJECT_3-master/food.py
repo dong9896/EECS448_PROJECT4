@@ -9,7 +9,7 @@ import random
 import math
 
 color = (255, 0, 0)
-radius = 10
+radius = 24
 speed = 1
 cd = 100
 GREEN = (0, 255, 0)

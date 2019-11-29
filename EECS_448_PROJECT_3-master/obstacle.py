@@ -8,7 +8,7 @@ import pygame
 import random
 
 color = (255, 0, 0)
-radius = 10
+radius = 32
 speed = 1
 cd = 100
 

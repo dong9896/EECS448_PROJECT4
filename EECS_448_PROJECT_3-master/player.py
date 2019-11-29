@@ -3,7 +3,6 @@ player module containing the player class which gets the information needed for
 Game to initialize
 """
 
-
 import pygame
 import math
 import sys
@@ -43,15 +42,16 @@ class Player:
         :pre: After player starting move their shark
         :post: update coordinate
         """
-        if 0 < self.x + sharksize / 2 + x <= self._master.get_width():
+        if 0 - 65 < self.x + x <= self._master.get_width() - 65:
             self.x += x
-        if 0 < self.y + sharksize / 2 + y <= self._master.get_height():
+        if 0 - 55< self.y + sharksize / 2 + y <= self._master.get_height() - 55:
             self.y += y
 
     def draw(self):
         """
         Renders the img of shark(For project 3, black circle stands for shark)
         """
+        print(self.x,self.y)
         self._master.blit(self.image, (self.x, self.y))
 
     def get_center(self):
@@ -61,7 +61,7 @@ class Player:
         :pre: There is shark exist in window
         :post: Help those check function to know whether shark touch a obstacle or food
         """
-        return self.x + sharksize / 2, self.y + sharksize / 2
+        return self.x + 65, self.y + 55
 
     def get_distance(self, xy):
         """
@@ -71,8 +71,8 @@ class Player:
         :post: Help those check function to know whether shark touch a obstacle or food
         """
         x, y = xy
-        x_distance = self.x + sharksize / 2
-        y_distance = self.y + sharksize / 2
+        x_distance = self.x + sharksize / 2 + 65
+        y_distance = self.y + sharksize / 2 + 55
         return math.sqrt(math.pow(x_distance - x, 2) + (math.pow(y_distance - y, 2)))
 
     def check_status(self, list):
@@ -105,5 +105,4 @@ class Player:
                     j.lives = 0
 
     def shark(self, img_path):
-
-         self.image = pygame.image.load(img_path);
+        self.image = pygame.image.load(img_path)

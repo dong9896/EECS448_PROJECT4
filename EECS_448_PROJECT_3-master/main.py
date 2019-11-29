@@ -20,7 +20,7 @@ shark1 = 'image/flip.png'
 intro_backg = 'image/shark.jpg'
 intro_backg2 = 'image/introb.jpeg'
 # screen set up
-screen = pygame.display.set_mode((worldx, worldy), FULLSCREEN)
+screen = pygame.display.set_mode((worldx, worldy))
 # background set up
 
 
@@ -33,13 +33,13 @@ pygame.display.set_icon(icon)
 # loading
 def pre_intro():
     intro = pygame.image.load(intro_backg).convert()
-    
+
     backg=pygame.Surface((worldx,worldy))
     font=pygame.font.SysFont('Arial',20,True,True)
-    
+
     text=font.render('Shake Shark Present ©',True,(255,255,255))
-   
-    
+
+
     i=1
     run=True
     while run:
@@ -47,21 +47,21 @@ def pre_intro():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
-       
+
         intro.set_alpha(i)
-        
+
         screen.blit(backg,backg.get_rect())
         screen.blit(intro, (100,100))
         screen.blit(text,(390,550))
         pygame.time.delay(16)
-        
+
         i+=1
         if(i==225):
             run=False
         pygame.display.update()
-  
-    
-   
+
+
+
 
 # game intro
 
