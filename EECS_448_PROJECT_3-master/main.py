@@ -69,7 +69,8 @@ def game_intro():
     intro = True
     buttom1 = buttom(430, 375, 100, 50, (255, 255, 255), 'Start')
     buttom2 = buttom(430, 455, 100, 50, (255, 255, 255), 'Quit')
-    buttom0 = buttom(360, 255, 250, 50, (255, 255, 255), 'Hungary Shark')
+    buttom3 = buttom(430, 535, 260, 50, (255, 255, 255), 'Highest Score')
+    buttom0 = buttom(360, 255, 250, 50, (255, 255, 255), 'Hungry Shark')
     intro_scp = pygame.image.load(intro_backg2).convert()
     x = 0
     while intro:
@@ -91,11 +92,21 @@ def game_intro():
                     buttom2.color = (255, 255, 0)
                 else:
                     buttom2.color = (255, 255, 255)
+
+                if buttom3.ontop(position):
+                    buttom3.color = (255, 255, 0)
+                else:
+                    buttom3.color = (255, 255, 255)
+
             if event.type == pygame.MOUSEBUTTONDOWN and buttom1.ontop(position):
                 intro = False
             if event.type == pygame.MOUSEBUTTONDOWN and buttom2.ontop(position):
                 pygame.quit()
                 sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN and buttom3.ontop(position):
+                with open('ScoreRanking.txt', 'r') as f:
+                    f_content = f.read()
+                    print(f_content, end='')
 
         rel_x = x % intro_scp.get_rect().height
         screen.blit(intro_scp, (0, rel_x - intro_scp.get_rect().height))
@@ -107,6 +118,7 @@ def game_intro():
         buttom0.draw(screen)
         buttom1.draw(screen)
         buttom2.draw(screen)
+        buttom3.draw(screen)
         pygame.display.update()
 
 # set needed information for game_loop
@@ -220,6 +232,17 @@ def game_loop():
         player.check_status(om.list)
         if player.lives <= 0:
             print("You lose your shark!")
+            with open('ScoreRanking.txt', 'r') as rf:
+                HighestScore = rf.read()
+                HighestScore = int(HighestScore)
+            rf.close()
+            with open('ScoreRanking.txt', 'w') as wf:
+                if HighestScore > player.CumulativeScore:
+                    print("Congratulations, You Beat the Highest Score !")
+                    wf.write(str(HighestScore))
+                else:
+                    wf.write(str(player.CumulativeScore))
+            wf.close()
             break
         player.check_food(fm.food_list)
 

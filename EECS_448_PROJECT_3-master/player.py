@@ -32,6 +32,7 @@ class Player:
         self.y = y
         self.lives = 1
         self.score = 0
+        self.CumulativeScore = 0;
 
     def move(self, x, y):
         """
@@ -102,6 +103,7 @@ class Player:
                 if temp <= sharksize / 2 + j.get_radius():
                     self.lives = 1
                     self.score += 1
+                    self.CumulativeScore += 1
                     j.lives = 0
 
     def shark(self, img_path):
