@@ -142,3 +142,6 @@ class Food_move:
         """
         for food in self.food_list:
             food.draw()
+
+    def delete(self):
+        self.food_list = []

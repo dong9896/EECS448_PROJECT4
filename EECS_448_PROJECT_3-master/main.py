@@ -11,6 +11,7 @@ worldx = 960
 worldy = 720
 fps = 60
 level = 1
+limit = 0
 pygame.init()
 clock = pygame.time.Clock()
 # images
@@ -132,6 +133,8 @@ fonts = {
 background = pygame.image.load(back).convert()
 background = pygame.transform.scale(background, (worldx, worldy), screen)
 player = Player(background, 200, 200, shark)
+om = ObstacleM(background)
+fm = Food_move(background)
 
 
 
@@ -154,7 +157,12 @@ def reset_game():
     :return: returns none
     :pre: player successfully get into next level
     """
+    global limit
     player.score = 0
+    om.delete()
+    fm.delete()
+    limit =0
+
 
 
 def draw():
@@ -179,13 +187,11 @@ def draw():
 
 
 def game_loop():
-    global player, background
-    om = ObstacleM(background)
-    fm = Food_move(background)
+    global player, background, om, fm
     mx = 0
     my = 0
     speed = 3
-    global shark
+    global shark,limit
 
 
     main = True
@@ -247,7 +253,9 @@ def game_loop():
         player.check_food(fm.food_list)
 
         # Starting update obstacle
-        om.number()
+        if limit < (10 + level)*100:
+            om.number()
+            limit += 1
         om.update()
         om.draw()
 

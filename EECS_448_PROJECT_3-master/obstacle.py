@@ -138,3 +138,7 @@ class ObstacleM:
         """
         for obstacle in self.list:
             obstacle.draw()
+
+    def delete(self):
+        self.list = []
+
