@@ -18,14 +18,14 @@ $> pyhton.exe .\main.py (for Windows machine)
 ## Instruction for Gaming
 w -> move up
 
-a - > move left 
+a - > move left
 
-s - > move down 
+s - > move down
 
-d -> move right 
+d -> move right
 
-q -> quit 
+q -> quit
 
-Score enough Green triangle to get into next level
+Score enough fish, crabs, or shrimps to get into next level
 
 Keep in mind, shark will die after mistakenly eat marine debris so do those fish living on our plant
