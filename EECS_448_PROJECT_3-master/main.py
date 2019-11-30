@@ -238,10 +238,10 @@ def game_loop():
             rf.close()
             with open('ScoreRanking.txt', 'w') as wf:
                 if HighestScore > player.CumulativeScore:
-                    print("Congratulations, You Beat the Highest Score !")
                     wf.write(str(HighestScore))
                 else:
                     wf.write(str(player.CumulativeScore))
+                    print("Congratulations, You Beat the Highest Score !")
             wf.close()
             break
         player.check_food(fm.food_list)
