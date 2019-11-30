@@ -1,12 +1,19 @@
 import pygame
 import sys
 import os
+import time
 from player import Player
 from pygame.locals import  FULLSCREEN
 from obstacle import ObstacleM
 from buttom import buttom
 from food import Food_move
 
+white = (255, 255, 255)
+blue = (0, 0, 128)
+display_width = 1000
+display_height = 800
+gameDisplay = pygame.display.set_mode((display_width, display_height))
+clock = pygame.time.Clock()
 worldx = 960
 worldy = 720
 fps = 60
@@ -23,7 +30,6 @@ intro_backg2 = 'image/introb.jpeg'
 # screen set up
 screen = pygame.display.set_mode((worldx, worldy), FULLSCREEN)
 # background set up
-
 
 # title
 pygame.display.set_caption("Shark")
@@ -105,9 +111,7 @@ def game_intro():
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN and buttom3.ontop(position):
-                with open('ScoreRanking.txt', 'r') as f:
-                    f_content = f.read()
-                    print(f_content, end='')
+                highScore()
 
         rel_x = x % intro_scp.get_rect().height
         screen.blit(intro_scp, (0, rel_x - intro_scp.get_rect().height))
@@ -135,6 +139,30 @@ background = pygame.transform.scale(background, (worldx, worldy), screen)
 player = Player(background, 200, 200, shark)
 om = ObstacleM(background)
 fm = Food_move(background)
+
+
+def text_object(text, font):
+    textSurface = font.render(text, True, blue)
+    return textSurface, textSurface.get_rect()
+
+def message_display(text):
+    largeText = pygame.font.Font('freesansbold.ttf', 70)
+    TextSurf, TextRect = text_object(text, largeText)
+    TextRect.center = (display_width // 2, display_height // 2)
+    gameDisplay.blit(TextSurf, TextRect)
+
+    pygame.display.update()
+
+    time.sleep(2)
+
+
+def highScore():
+    with open('ScoreRanking.txt', 'r') as f:
+        f_content = f.read()
+        f_content = str(f_content)
+
+    screen.fill(white)
+    message_display('Highest Score: '+ f_content + 'pts')
 
 
 
