@@ -20,7 +20,7 @@ shark1 = 'image/flip.png'
 intro_backg = 'image/shark.jpg'
 intro_backg2 = 'image/introb.jpeg'
 # screen set up
-screen = pygame.display.set_mode((worldx, worldy))
+screen = pygame.display.set_mode((worldx, worldy), FULLSCREEN)
 # background set up
 
 
@@ -69,7 +69,7 @@ def game_intro():
     intro = True
     buttom1 = buttom(430, 375, 100, 50, (255, 255, 255), 'Start')
     buttom2 = buttom(430, 455, 100, 50, (255, 255, 255), 'Quit')
-    buttom3 = buttom(430, 535, 260, 50, (255, 255, 255), 'Highest Score')
+    buttom3 = buttom(360, 535, 260, 50, (255, 255, 255), 'LeaderBoard')
     buttom0 = buttom(360, 255, 250, 50, (255, 255, 255), 'Hungry Shark')
     intro_scp = pygame.image.load(intro_backg2).convert()
     x = 0
