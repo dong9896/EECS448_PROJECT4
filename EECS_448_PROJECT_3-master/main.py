@@ -37,6 +37,7 @@ selection_m = pygame.mixer.Sound("sounds/Pop.wav")
 selection_m2 = pygame.mixer.Sound("sounds/da.wav")
 ding = pygame.mixer.Sound("sounds/ding.wav")
 end = pygame.mixer.Sound("sounds/end.wav")
+win = pygame.mixer.Sound("sounds/win.wav")
 # screen set up
 screen = pygame.display.set_mode((worldx, worldy), FULLSCREEN)
 # background set up
@@ -378,7 +379,7 @@ def SecM():
     buttom2 = buttom(430, 455, 100, 50, (255, 255, 255), 'Quit')
     buttom3 = buttom(350, 535, 260, 50, (255, 255, 255), 'Return to Menu')
     buttom0 = buttom(360, 255, 250, 50, (255, 255, 255), 'Paused')
-
+    pygame.time.delay(20)
     while main:
         for event in pygame.event.get():
             position = pygame.mouse.get_pos()
@@ -434,6 +435,7 @@ def gameOver():
     buttom3 = buttom(350, 535, 260, 50, (255, 255, 255), 'Return to Menu')
     buttom0 = buttom(360, 255, 250, 50, (255, 255, 255), 'Game Over !')
     pygame.mixer.Sound.play(end)
+    pygame.time.delay(20)
     while main:
         for event in pygame.event.get():
             position = pygame.mouse.get_pos()
@@ -481,7 +483,7 @@ def game_loop2():
     speed = 8
     main= True
     times= 0
-    timex =60
+    timex =2
     while main:
         background = pygame.image.load(back).convert()
         background = pygame.transform.scale(
@@ -541,10 +543,13 @@ def game_loop2():
            if boss == True:
                boss = False
                check = False
+               sm.clean()
+               pygame.mixer.music.stop()
                break
            elif boss == False:
                player = Player(background, 200, 600, shark)
                sm.clean()
+               pygame.mixer.music.stop()
                success()
                break
         sm.move()
@@ -581,7 +586,8 @@ def success():
     buttom2 = buttom(430, 455, 100, 50, (255, 255, 255), 'Quit')
     buttom3 = buttom(350, 535, 260, 50, (255, 255, 255), 'Return to Menu')
     buttom0 = buttom(360, 255, 250, 50, (255, 255, 255), 'Victory!')
-
+    pygame.mixer.Sound.play(win)
+    pygame.time.delay(20)
     while main:
         for event in pygame.event.get():
             position = pygame.mouse.get_pos()
@@ -607,6 +613,9 @@ def success():
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN and buttom3.ontop(position):
+                pygame.mixer.Sound.play(selection_m2)
+                pygame.time.delay(20)
+                pygame.mixer.music.load(main_sound)
                 main = False
 
         buttom0.draw(screen)
@@ -614,12 +623,10 @@ def success():
         buttom2.draw(screen)
         buttom3.draw(screen)
         pygame.display.flip()
-#pre_intro()
+
+#main function call
+pre_intro()
 
 game_intro()
-# gameOver()
-# game_loop()
 
-#gameOver()
-#game_loop()
 pygame.quit()
