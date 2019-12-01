@@ -106,7 +106,7 @@ def game_intro():
                     buttom3.color = (255, 255, 255)
 
             if event.type == pygame.MOUSEBUTTONDOWN and buttom1.ontop(position):
-                intro = False
+                game_loop()
             if event.type == pygame.MOUSEBUTTONDOWN and buttom2.ontop(position):
                 pygame.quit()
                 sys.exit()
@@ -219,8 +219,8 @@ def game_loop():
     mx = 0
     my = 0
     speed = 3
-    global shark,limit
-
+    global shark,limit,level
+    condition=False
 
     main = True
     while main:
@@ -235,9 +235,10 @@ def game_loop():
                 main = False
             if event.type == pygame.KEYDOWN:
                 if event.key == ord('q'):
-                    pygame.quit()
-                    sys.exit()
-                    main = False
+                    if SecM():
+                        condition=True
+                        main=False
+                        break
             if event.type == pygame.KEYDOWN:
                 if event.key == ord('a'):
                     player.shark(shark1)
@@ -299,9 +300,49 @@ def game_loop():
         dt = 1.0 / float(fps)
         clock.tick(fps)
         pygame.display.update()
+    if condition:
+        player = Player(background, 200, 200, shark)
+        level =1
+        limit = 0
+def SecM ():
+    main=True
+    screen.fill([255,255,255])
+    buttom1 = buttom(430, 375, 100, 50, (255, 255, 255), 'Continue')
+    buttom2 = buttom(430, 455, 100, 50, (255, 255, 255), 'Quit')
+    buttom3 = buttom(375, 535, 200, 50, (255, 255, 255), 'Return to Menu')
+    buttom0 = buttom(360, 255, 250, 50, (255, 255, 255), 'Paused')
 
+    while main:
+        for event in pygame.event.get():
+            position = pygame.mouse.get_pos()
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+                main = False
+            if event.type == pygame.KEYDOWN:
+                if event.key == ord('q'):
+                    pygame.quit()
+                    sys.exit()
+                    
+            if event.type == pygame.MOUSEBUTTONDOWN and buttom1.ontop(position):
+                main = False
+                
+            if event.type == pygame.MOUSEBUTTONDOWN and buttom2.ontop(position):
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN and buttom3.ontop(position):
+                main=False
+                return True
+        buttom0.draw(screen)
+        buttom1.draw(screen)
+        buttom2.draw(screen)
+        buttom3.draw(screen)
+        pygame.display.flip()
 
-pre_intro()
+    return False
+
+#pre_intro()
 game_intro()
+
 game_loop()
 pygame.quit()
