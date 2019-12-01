@@ -7,6 +7,7 @@ from pygame.locals import  FULLSCREEN
 from obstacle import ObstacleM
 from buttom import buttom
 from food import Food_move
+from ship import Ship
 
 white = (255, 255, 255)
 blue = (0, 0, 128)
@@ -78,6 +79,7 @@ def game_intro():
     buttom2 = buttom(430, 455, 100, 50, (255, 255, 255), 'Quit')
     buttom3 = buttom(360, 535, 260, 50, (255, 255, 255), 'LeaderBoard')
     buttom0 = buttom(360, 255, 250, 50, (255, 255, 255), 'Hungry Shark')
+    buttom4 = buttom(430, 635, 100, 50, (255, 255, 255), 'Start2')
     intro_scp = pygame.image.load(intro_backg2).convert()
     x = 0
     while intro:
@@ -104,16 +106,21 @@ def game_intro():
                     buttom3.color = (255, 255, 0)
                 else:
                     buttom3.color = (255, 255, 255)
-
+                if buttom4.ontop(position):
+                    buttom4.color = (255, 255, 0)
+                else:
+                    buttom4.color = (255, 255, 255)
             if event.type == pygame.MOUSEBUTTONDOWN and buttom1.ontop(position):
+                intro = False
                 game_loop()
-                 
             if event.type == pygame.MOUSEBUTTONDOWN and buttom2.ontop(position):
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN and buttom3.ontop(position):
                 highScore()
-
+            if event.type == pygame.MOUSEBUTTONDOWN and buttom4.ontop(position):
+                intro = False
+                game_loop2()
         rel_x = x % intro_scp.get_rect().height
         screen.blit(intro_scp, (0, rel_x - intro_scp.get_rect().height))
         if rel_x < worldy:
@@ -125,6 +132,7 @@ def game_intro():
         buttom1.draw(screen)
         buttom2.draw(screen)
         buttom3.draw(screen)
+        buttom4.draw(screen)
         pygame.display.update()
 
 # set needed information for game_loop
@@ -137,9 +145,10 @@ fonts = {
 }
 background = pygame.image.load(back).convert()
 background = pygame.transform.scale(background, (worldx, worldy), screen)
-player = Player(background, 200, 200, shark)
+player = Player(background, 200, 600, shark)
 om = ObstacleM(background)
 fm = Food_move(background)
+sm = Ship(background)
 
 
 def text_object(text, font):
@@ -219,9 +228,9 @@ def game_loop():
     global player, background, om, fm
     mx = 0
     my = 0
-    speed = 3
-    global shark,limit,level
-    condition=False
+    speed = 5
+    global shark,limit
+
 
     main = True
     while main:
@@ -236,10 +245,9 @@ def game_loop():
                 main = False
             if event.type == pygame.KEYDOWN:
                 if event.key == ord('q'):
-                    if SecM():
-                        condition=True
-                        main=False
-                        break
+                    pygame.quit()
+                    sys.exit()
+                    main = False
             if event.type == pygame.KEYDOWN:
                 if event.key == ord('a'):
                     player.shark(shark1)
@@ -268,7 +276,6 @@ def game_loop():
         player.check_status(om.list)
         if player.lives <= 0:
             print("You lose your shark!")
-            
             with open('ScoreRanking.txt', 'r') as rf:
                 HighestScore = rf.read()
                 HighestScore = int(HighestScore)
@@ -280,14 +287,7 @@ def game_loop():
                     wf.write(str(player.CumulativeScore))
                     print("Congratulations, You Beat the Highest Score !")
             wf.close()
-            player = Player(background, 200, 200, shark)
-            reset_game()
-            level =1
-            limit = 0
-            gameOver()
             break
-            
-            
         player.check_food(fm.food_list)
 
         # Starting update obstacle
@@ -309,23 +309,19 @@ def game_loop():
         dt = 1.0 / float(fps)
         clock.tick(fps)
         pygame.display.update()
-    if condition:
-        player = Player(background, 200, 200, shark)
-        reset_game()
-        level =1
-        limit = 0
-        
-def SecM ():
-    main=True
-    screen.fill([255,255,255])
-    buttom1 = buttom(430, 375, 160, 50, (255, 255, 255), 'Continue')
-    buttom2 = buttom(430, 455, 100, 50, (255, 255, 255), 'Quit')
-    buttom3 = buttom(350, 535, 260, 50, (255, 255, 255), 'Return to Menu')
-    buttom0 = buttom(360, 255, 250, 50, (255, 255, 255), 'Paused')
 
+
+def game_loop2():
+    global background, player
+    mx = 0
+    my = 0
+    speed = 10
+    main= True
     while main:
+        background = pygame.image.load(back).convert()
+        background = pygame.transform.scale(background, (worldx, worldy), screen)
+
         for event in pygame.event.get():
-            position = pygame.mouse.get_pos()
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
@@ -334,81 +330,50 @@ def SecM ():
                 if event.key == ord('q'):
                     pygame.quit()
                     sys.exit()
-            if event.type == pygame.MOUSEMOTION:
-                if buttom1.ontop(position):
-                    buttom1.color = (255, 255, 0)
-                else:
-                    buttom1.color = (255, 255, 255)
-
-                if buttom2.ontop(position):
-                    buttom2.color = (255, 255, 0)
-                else:
-                    buttom2.color = (255, 255, 255)
-                if buttom3.ontop(position):
-                    buttom3.color = (255, 255, 0)
-                else:
-                    buttom3.color = (255, 255, 255)
-            
-            if event.type == pygame.MOUSEBUTTONDOWN and buttom1.ontop(position):
-                main = False
-                
-            if event.type == pygame.MOUSEBUTTONDOWN and buttom2.ontop(position):
-                pygame.quit()
-                sys.exit()
-            if event.type == pygame.MOUSEBUTTONDOWN and buttom3.ontop(position):
-                main=False
-                return True
-        buttom0.draw(screen)
-        buttom1.draw(screen)
-        buttom2.draw(screen)
-        buttom3.draw(screen)
-        pygame.display.flip()
-
-    return False
-def gameOver():
-    main=True
-    screen.fill([255,255,255])
-    #buttom1 = buttom(430, 375, 160, 50, (255, 255, 255), 'Continue')
-    buttom2 = buttom(430, 455, 100, 50, (255, 255, 255), 'Quit')
-    buttom3 = buttom(350, 535, 260, 50, (255, 255, 255), 'Return to Menu')
-    buttom0 = buttom(360, 255, 250, 50, (255, 255, 255), 'Game Over !')
-
-    while main:
-        for event in pygame.event.get():
-            position = pygame.mouse.get_pos()
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-                main = False
+                    main = False
             if event.type == pygame.KEYDOWN:
-                if event.key == ord('q'):
-                    pygame.quit()
-                    sys.exit()
-            if event.type == pygame.MOUSEMOTION:
-                
+                if event.key == ord('a'):
+                    player.shark(shark1)
+                    mx = -speed
+                if event.key == ord('w'):
+                    my = -speed
 
-                if buttom2.ontop(position):
-                    buttom2.color = (255, 255, 0)
-                else:
-                    buttom2.color = (255, 255, 255)
-                if buttom3.ontop(position):
-                    buttom3.color = (255, 255, 0)
-                else:
-                    buttom3.color = (255, 255, 255)    
-            if event.type == pygame.MOUSEBUTTONDOWN and buttom2.ontop(position):
-                pygame.quit()
-                sys.exit()
-            if event.type == pygame.MOUSEBUTTONDOWN and buttom3.ontop(position):
-                main=False
-               
-        buttom0.draw(screen)
-      
-        buttom2.draw(screen)
-        buttom3.draw(screen)
+                if event.key == ord('d'):
+                    player.shark(shark)
+                    mx = speed
+                if event.key == ord('s'):
+                    my = speed
+            if event.type == pygame.KEYUP:
+                if event.key == ord('a'):
+                    if mx == -speed:
+                        my = 0
+                if event.key == ord('w'):
+                    if my == -speed:
+                        mx = 0
+                if event.key == ord('d'):
+                    if mx == speed:
+                        my = 0
+                if event.key == ord('s'):
+                    if my == speed:
+                        mx = 0
+        player.check_status(sm.bullte)
+        if player.lives <= 0:
+            break
+        sm.move()
+        sm.draw()
+        sm.fire()
+        sm.update_b()
+        sm.draw_b()
+        if player.y <=100 and my <0:
+            player.move(mx, 0)
+        else:
+            player.move(mx, my)
+        player.draw()
         pygame.display.flip()
-#pre_intro()
-
+        dt = 1.0 / float(fps)
+        clock.tick(fps)
+        pygame.display.update()
+pre_intro()
 game_intro()
-#gameOver()
-#game_loop()
+
 pygame.quit()
