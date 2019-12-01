@@ -7,6 +7,7 @@ from pygame.locals import  FULLSCREEN
 from obstacle import ObstacleM
 from buttom import buttom
 from food import Food_move
+from ship import Ship
 
 white = (255, 255, 255)
 blue = (0, 0, 128)
@@ -78,6 +79,7 @@ def game_intro():
     buttom2 = buttom(430, 455, 100, 50, (255, 255, 255), 'Quit')
     buttom3 = buttom(360, 535, 260, 50, (255, 255, 255), 'LeaderBoard')
     buttom0 = buttom(360, 255, 250, 50, (255, 255, 255), 'Hungry Shark')
+    buttom4 = buttom(430, 635, 100, 50, (255, 255, 255), 'Start2')
     intro_scp = pygame.image.load(intro_backg2).convert()
     x = 0
     while intro:
@@ -104,6 +106,10 @@ def game_intro():
                     buttom3.color = (255, 255, 0)
                 else:
                     buttom3.color = (255, 255, 255)
+                if buttom4.ontop(position):
+                    buttom4.color = (255, 255, 0)
+                else:
+                    buttom4.color = (255, 255, 255)    
 
             if event.type == pygame.MOUSEBUTTONDOWN and buttom1.ontop(position):
                 game_loop()
@@ -113,7 +119,9 @@ def game_intro():
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN and buttom3.ontop(position):
                 highScore()
-
+            if event.type == pygame.MOUSEBUTTONDOWN and buttom4.ontop(position):
+                intro = False
+                game_loop2()
         rel_x = x % intro_scp.get_rect().height
         screen.blit(intro_scp, (0, rel_x - intro_scp.get_rect().height))
         if rel_x < worldy:
@@ -125,6 +133,7 @@ def game_intro():
         buttom1.draw(screen)
         buttom2.draw(screen)
         buttom3.draw(screen)
+        buttom4.draw(screen)
         pygame.display.update()
 
 # set needed information for game_loop
@@ -406,6 +415,68 @@ def gameOver():
         buttom2.draw(screen)
         buttom3.draw(screen)
         pygame.display.flip()
+def game_loop2():
+    global background, player
+    mx = 0
+    my = 0
+    speed = 10
+    main= True
+    while main:
+        background = pygame.image.load(back).convert()
+        background = pygame.transform.scale(background, (worldx, worldy), screen)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+                main = False
+            if event.type == pygame.KEYDOWN:
+                if event.key == ord('q'):
+                    pygame.quit()
+                    sys.exit()
+                    main = False
+            if event.type == pygame.KEYDOWN:
+                if event.key == ord('a'):
+                    player.shark(shark1)
+                    mx = -speed
+                if event.key == ord('w'):
+                    my = -speed
+
+                if event.key == ord('d'):
+                    player.shark(shark)
+                    mx = speed
+                if event.key == ord('s'):
+                    my = speed
+            if event.type == pygame.KEYUP:
+                if event.key == ord('a'):
+                    if mx == -speed:
+                        my = 0
+                if event.key == ord('w'):
+                    if my == -speed:
+                        mx = 0
+                if event.key == ord('d'):
+                    if mx == speed:
+                        my = 0
+                if event.key == ord('s'):
+                    if my == speed:
+                        mx = 0
+        player.check_status(sm.bullte)
+        if player.lives <= 0:
+            break
+        sm.move()
+        sm.draw()
+        sm.fire()
+        sm.update_b()
+        sm.draw_b()
+        if player.y <=100 and my <0:
+            player.move(mx, 0)
+        else:
+            player.move(mx, my)
+        player.draw()
+        pygame.display.flip()
+        dt = 1.0 / float(fps)
+        clock.tick(fps)
+        pygame.display.update()        
 pre_intro()
 
 game_intro()
