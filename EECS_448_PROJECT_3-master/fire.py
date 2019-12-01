@@ -1,5 +1,5 @@
 import pygame
-radius = 4
+radius = 32
 class bulltes():
 
     imgpath3 = 'image/bomb.png'

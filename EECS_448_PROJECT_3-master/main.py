@@ -14,7 +14,6 @@ blue = (0, 0, 128)
 display_width = 1000
 display_height = 800
 gameDisplay = pygame.display.set_mode((display_width, display_height))
-clock = pygame.time.Clock()
 worldx = 960
 worldy = 720
 fps = 60
@@ -86,7 +85,7 @@ def game_intro():
     buttom2 = buttom(430, 635, 100, 50, (255, 255, 255), 'Quit')
     buttom3 = buttom(360, 535, 260, 50, (255, 255, 255), 'LeaderBoard')
     buttom0 = buttom(360, 255, 250, 50, (255, 255, 255), 'Hungry Shark')
-    buttom4 = buttom(430, 455, 100, 50, (255, 255, 255), 'Start2')
+    buttom4 = buttom(430, 455, 100, 50, (255, 255, 255), 'Mode2')
     intro_scp = pygame.image.load(intro_backg2).convert()
     x = 0
     pygame.mixer.music.load(main_sound)
@@ -172,6 +171,8 @@ player = Player(background, 200, 600, shark)
 om = ObstacleM(background)
 fm = Food_move(background)
 sm = Ship(background)
+boss = False
+check = False
 
 
 def text_object(text, font):
@@ -259,6 +260,11 @@ def game_loop():
     pygame.mixer.music.load(game_mode1)
     pygame.mixer.music.play(-1)
     pygame.mixer.music.set_volume(0.1)
+    speed = 8
+
+    global shark,limit,level,boss
+    condition=False
+
     main = True
     pygame.time.delay(20)
     while main:
@@ -267,6 +273,13 @@ def game_loop():
         background = pygame.transform.scale(
             background, (worldx, worldy), screen)
 
+        background = pygame.transform.scale(background, (worldx, worldy), screen)
+        if level%5 == 0:
+            boss = True
+            level +=1
+            game_loop2()
+        if check ==True:
+            break
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -457,7 +470,7 @@ def gameOver():
 
 
 def game_loop2():
-    global background, player
+    global background, player,boss,check
     mx = 0
     my = 0
     speed = 10
@@ -465,6 +478,10 @@ def game_loop2():
     pygame.mixer.music.load(game_mode2)
     pygame.mixer.music.play(-1)
     pygame.time.delay(20)
+    speed = 8
+    main= True
+    times= 0
+    timex =60
     while main:
         background = pygame.image.load(back).convert()
         background = pygame.transform.scale(
@@ -518,7 +535,18 @@ def game_loop2():
             sm.clean()
             pygame.mixer.music.stop()
             gameOver()
+            check = True
             break
+        elif timex == 0:
+           if boss == True:
+               boss = False
+               check = False
+               break
+           elif boss == False:
+               player = Player(background, 200, 600, shark)
+               sm.clean()
+               success()
+               break
         sm.move()
         sm.draw()
         sm.fire()
@@ -535,8 +563,63 @@ def game_loop2():
         pygame.display.update()
 # pre_intro()
 
+        clock.tick(60)
+        times +=1
+        if times == 30:
+            timex -= 1
+            times = 0
+        time_display = fonts[32].render(str(timex), True, (0, 0, 0))
+        screen.blit(time_display, (450, 25))
+
+        pygame.display.update()
+
+
+def success():
+    main = True
+    screen.fill([255, 255, 255])
+    # buttom1 = buttom(430, 375, 160, 50, (255, 255, 255), 'Continue')
+    buttom2 = buttom(430, 455, 100, 50, (255, 255, 255), 'Quit')
+    buttom3 = buttom(350, 535, 260, 50, (255, 255, 255), 'Return to Menu')
+    buttom0 = buttom(360, 255, 250, 50, (255, 255, 255), 'Victory!')
+
+    while main:
+        for event in pygame.event.get():
+            position = pygame.mouse.get_pos()
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+                main = False
+            if event.type == pygame.KEYDOWN:
+                if event.key == ord('q'):
+                    pygame.quit()
+                    sys.exit()
+            if event.type == pygame.MOUSEMOTION:
+
+                if buttom2.ontop(position):
+                    buttom2.color = (255, 255, 0)
+                else:
+                    buttom2.color = (255, 255, 255)
+                if buttom3.ontop(position):
+                    buttom3.color = (255, 255, 0)
+                else:
+                    buttom3.color = (255, 255, 255)
+            if event.type == pygame.MOUSEBUTTONDOWN and buttom2.ontop(position):
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN and buttom3.ontop(position):
+                main = False
+
+        buttom0.draw(screen)
+
+        buttom2.draw(screen)
+        buttom3.draw(screen)
+        pygame.display.flip()
+#pre_intro()
 
 game_intro()
 # gameOver()
 # game_loop()
+
+#gameOver()
+#game_loop()
 pygame.quit()
