@@ -72,8 +72,8 @@ def pre_intro():
         screen.blit(text, (390, 550))
         pygame.time.delay(16)
 
-        i += 1
-        if(i == 225):
+        i += 2
+        if(i > 225):
             run = False
         pygame.display.update()
 
@@ -82,11 +82,11 @@ def pre_intro():
 
 def game_intro():
     intro = True
-    buttom1 = buttom(430, 375, 100, 50, (255, 255, 255), 'Start')
-    buttom2 = buttom(430, 635, 100, 50, (255, 255, 255), 'Quit')
-    buttom3 = buttom(360, 535, 260, 50, (255, 255, 255), 'LeaderBoard')
-    buttom0 = buttom(360, 255, 250, 50, (255, 255, 255), 'Hungry Shark')
-    buttom4 = buttom(430, 455, 100, 50, (255, 255, 255), 'Mode2')
+    buttom1 = buttom(410, 355, 150, 50, (255, 255, 255), 'Mode1')
+    buttom2 = buttom(430, 615, 100, 50, (255, 255, 255), 'Quit')
+    buttom3 = buttom(370, 510, 220, 50, (255, 255, 255), 'Score Board')
+    buttom0 = buttom(360, 200, 250, 50, (255, 255, 255), 'Hungry Shark')
+    buttom4 = buttom(410, 435, 150, 50, (255, 255, 255), 'Mode2')
     intro_scp = pygame.image.load(intro_backg2).convert()
     x = 0
     pygame.mixer.music.load(main_sound)
@@ -375,7 +375,7 @@ def game_loop():
 def SecM():
     main = True
     screen.fill([255, 255, 255])
-    buttom1 = buttom(430, 375, 160, 50, (255, 255, 255), 'Continue')
+    buttom1 = buttom(400, 375, 160, 50, (255, 255, 255), 'Continue')
     buttom2 = buttom(430, 455, 100, 50, (255, 255, 255), 'Quit')
     buttom3 = buttom(350, 535, 260, 50, (255, 255, 255), 'Return to Menu')
     buttom0 = buttom(360, 255, 250, 50, (255, 255, 255), 'Paused')
@@ -630,6 +630,7 @@ def success():
         pygame.display.flip()
 
 #main function call
+
 pre_intro()
 
 game_intro()
