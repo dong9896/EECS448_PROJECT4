@@ -475,15 +475,13 @@ def game_loop2():
     global background, player,boss,check
     mx = 0
     my = 0
-    speed = 10
-    main = True
     pygame.mixer.music.load(game_mode2)
     pygame.mixer.music.play(-1)
     pygame.time.delay(20)
     speed = 8
     main= True
     times= 0
-    timex =2
+    timex =60
     while main:
         background = pygame.image.load(back).convert()
         background = pygame.transform.scale(
@@ -533,12 +531,19 @@ def game_loop2():
                         mx = 0
         player.check_status(sm.bullte)
         if player.lives <= 0:
-            player = Player(background, 200, 600, shark)
-            sm.clean()
-            pygame.mixer.music.stop()
-            gameOver()
-            check = True
-            break
+           if boss == True:
+               player = Player(background, 200, 600, shark)
+               sm.clean()
+               pygame.mixer.music.stop()
+               gameOver()
+               check = True
+               break
+           elif boss == False:
+               player = Player(background, 200, 600, shark)
+               sm.clean()
+               pygame.mixer.music.stop()
+               gameOver()
+               break
         elif timex == 0:
            if boss == True:
                boss = False
