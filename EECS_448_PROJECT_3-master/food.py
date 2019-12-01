@@ -13,7 +13,7 @@ radius = 24
 speed = 1
 cd = 100
 GREEN = (0, 255, 0)
-size = 3
+size = 32
 
 
 class Food:

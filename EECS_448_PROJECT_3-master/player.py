@@ -45,7 +45,7 @@ class Player:
         """
         if 0 - 65 < self.x + x <= self._master.get_width() - 65:
             self.x += x
-        if 0 - 55< self.y + sharksize / 2 + y <= self._master.get_height() - 55:
+        if 0 - 35< self.y + sharksize / 2 + y <= self._master.get_height() - 35:
             self.y += y
 
     def draw(self):
@@ -62,7 +62,7 @@ class Player:
         :pre: There is shark exist in window
         :post: Help those check function to know whether shark touch a obstacle or food
         """
-        return self.x + 65, self.y + 55
+        return self.x + 65, self.y + 35
 
     def get_distance(self, xy):
         """
@@ -73,7 +73,7 @@ class Player:
         """
         x, y = xy
         x_distance = self.x + sharksize / 2 + 65
-        y_distance = self.y + sharksize / 2 + 55
+        y_distance = self.y + sharksize / 2 + 35
         return math.sqrt(math.pow(x_distance - x, 2) + (math.pow(y_distance - y, 2)))
 
     def check_status(self, list):
