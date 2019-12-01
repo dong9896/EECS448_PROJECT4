@@ -406,7 +406,7 @@ def gameOver():
         buttom2.draw(screen)
         buttom3.draw(screen)
         pygame.display.flip()
-#pre_intro()
+pre_intro()
 
 game_intro()
 #gameOver()
