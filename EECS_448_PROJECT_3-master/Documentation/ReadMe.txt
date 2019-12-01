@@ -12,6 +12,11 @@ To start the game run:
 $> python main.py (for Linux machine)
 $> pyhton.exe .\main.py (for Windows machine)
 ```
+To start the test run:
+```
+$> python test.py (for Linux machine)
+$> pyhton.exe .\test.py (for Windows machine)
+```
 
 ## Instruction for Gaming
 w -> move up
