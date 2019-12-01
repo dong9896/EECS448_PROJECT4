@@ -307,9 +307,9 @@ def game_loop():
 def SecM ():
     main=True
     screen.fill([255,255,255])
-    buttom1 = buttom(430, 375, 100, 50, (255, 255, 255), 'Continue')
+    buttom1 = buttom(430, 375, 160, 50, (255, 255, 255), 'Continue')
     buttom2 = buttom(430, 455, 100, 50, (255, 255, 255), 'Quit')
-    buttom3 = buttom(375, 535, 200, 50, (255, 255, 255), 'Return to Menu')
+    buttom3 = buttom(375, 535, 260, 50, (255, 255, 255), 'Return to Menu')
     buttom0 = buttom(360, 255, 250, 50, (255, 255, 255), 'Paused')
 
     while main:
@@ -323,7 +323,21 @@ def SecM ():
                 if event.key == ord('q'):
                     pygame.quit()
                     sys.exit()
-                    
+            if event.type == pygame.MOUSEMOTION:
+                if buttom1.ontop(position):
+                    buttom1.color = (255, 255, 0)
+                else:
+                    buttom1.color = (255, 255, 255)
+
+                if buttom2.ontop(position):
+                    buttom2.color = (255, 255, 0)
+                else:
+                    buttom2.color = (255, 255, 255)
+                if buttom3.ontop(position):
+                    buttom3.color = (255, 255, 0)
+                else:
+                    buttom3.color = (255, 255, 255)
+            
             if event.type == pygame.MOUSEBUTTONDOWN and buttom1.ontop(position):
                 main = False
                 
