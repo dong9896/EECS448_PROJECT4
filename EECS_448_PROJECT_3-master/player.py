@@ -47,6 +47,7 @@ class Player:
             self.x += x
         if 0 - 35< self.y + sharksize / 2 + y <= self._master.get_height() - 35:
             self.y += y
+        return x,y
 
     def draw(self):
         """
