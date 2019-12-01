@@ -58,3 +58,9 @@ class Ship:
     def draw_b(self):
         for b in self.bullte:
             b.draw()
+
+    def clean(self):
+        self.x =200
+        self.y =50
+        self.bullte =[]
+
