@@ -107,6 +107,7 @@ def game_intro():
 
             if event.type == pygame.MOUSEBUTTONDOWN and buttom1.ontop(position):
                 game_loop()
+                 
             if event.type == pygame.MOUSEBUTTONDOWN and buttom2.ontop(position):
                 pygame.quit()
                 sys.exit()
@@ -267,6 +268,7 @@ def game_loop():
         player.check_status(om.list)
         if player.lives <= 0:
             print("You lose your shark!")
+            
             with open('ScoreRanking.txt', 'r') as rf:
                 HighestScore = rf.read()
                 HighestScore = int(HighestScore)
@@ -278,7 +280,14 @@ def game_loop():
                     wf.write(str(player.CumulativeScore))
                     print("Congratulations, You Beat the Highest Score !")
             wf.close()
+            player = Player(background, 200, 200, shark)
+            reset_game()
+            level =1
+            limit = 0
+            gameOver()
             break
+            
+            
         player.check_food(fm.food_list)
 
         # Starting update obstacle
@@ -302,14 +311,16 @@ def game_loop():
         pygame.display.update()
     if condition:
         player = Player(background, 200, 200, shark)
+        reset_game()
         level =1
         limit = 0
+        
 def SecM ():
     main=True
     screen.fill([255,255,255])
     buttom1 = buttom(430, 375, 160, 50, (255, 255, 255), 'Continue')
     buttom2 = buttom(430, 455, 100, 50, (255, 255, 255), 'Quit')
-    buttom3 = buttom(375, 535, 260, 50, (255, 255, 255), 'Return to Menu')
+    buttom3 = buttom(350, 535, 260, 50, (255, 255, 255), 'Return to Menu')
     buttom0 = buttom(360, 255, 250, 50, (255, 255, 255), 'Paused')
 
     while main:
@@ -354,9 +365,50 @@ def SecM ():
         pygame.display.flip()
 
     return False
+def gameOver():
+    main=True
+    screen.fill([255,255,255])
+    #buttom1 = buttom(430, 375, 160, 50, (255, 255, 255), 'Continue')
+    buttom2 = buttom(430, 455, 100, 50, (255, 255, 255), 'Quit')
+    buttom3 = buttom(350, 535, 260, 50, (255, 255, 255), 'Return to Menu')
+    buttom0 = buttom(360, 255, 250, 50, (255, 255, 255), 'Game Over !')
 
+    while main:
+        for event in pygame.event.get():
+            position = pygame.mouse.get_pos()
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+                main = False
+            if event.type == pygame.KEYDOWN:
+                if event.key == ord('q'):
+                    pygame.quit()
+                    sys.exit()
+            if event.type == pygame.MOUSEMOTION:
+                
+
+                if buttom2.ontop(position):
+                    buttom2.color = (255, 255, 0)
+                else:
+                    buttom2.color = (255, 255, 255)
+                if buttom3.ontop(position):
+                    buttom3.color = (255, 255, 0)
+                else:
+                    buttom3.color = (255, 255, 255)    
+            if event.type == pygame.MOUSEBUTTONDOWN and buttom2.ontop(position):
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN and buttom3.ontop(position):
+                main=False
+               
+        buttom0.draw(screen)
+      
+        buttom2.draw(screen)
+        buttom3.draw(screen)
+        pygame.display.flip()
 #pre_intro()
-game_intro()
 
-game_loop()
+game_intro()
+#gameOver()
+#game_loop()
 pygame.quit()
