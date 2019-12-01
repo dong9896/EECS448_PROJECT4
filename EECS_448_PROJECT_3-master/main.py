@@ -149,6 +149,7 @@ background = pygame.transform.scale(background, (worldx, worldy), screen)
 player = Player(background, 200, 200, shark)
 om = ObstacleM(background)
 fm = Food_move(background)
+sm = Ship(background)
 
 
 def text_object(text, font):
