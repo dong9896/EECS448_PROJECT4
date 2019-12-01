@@ -76,10 +76,10 @@ def pre_intro():
 def game_intro():
     intro = True
     buttom1 = buttom(430, 375, 100, 50, (255, 255, 255), 'Start')
-    buttom2 = buttom(430, 455, 100, 50, (255, 255, 255), 'Quit')
+    buttom2 = buttom(430, 635, 100, 50, (255, 255, 255), 'Quit')
     buttom3 = buttom(360, 535, 260, 50, (255, 255, 255), 'LeaderBoard')
     buttom0 = buttom(360, 255, 250, 50, (255, 255, 255), 'Hungry Shark')
-    buttom4 = buttom(430, 635, 100, 50, (255, 255, 255), 'Start2')
+    buttom4 = buttom(430, 455, 100, 50, (255, 255, 255), 'Start2')
     intro_scp = pygame.image.load(intro_backg2).convert()
     x = 0
     while intro:
@@ -120,7 +120,6 @@ def game_intro():
             if event.type == pygame.MOUSEBUTTONDOWN and buttom3.ontop(position):
                 highScore()
             if event.type == pygame.MOUSEBUTTONDOWN and buttom4.ontop(position):
-                intro = False
                 game_loop2()
         rel_x = x % intro_scp.get_rect().height
         screen.blit(intro_scp, (0, rel_x - intro_scp.get_rect().height))
@@ -146,7 +145,7 @@ fonts = {
 }
 background = pygame.image.load(back).convert()
 background = pygame.transform.scale(background, (worldx, worldy), screen)
-player = Player(background, 200, 200, shark)
+player = Player(background, 200, 600, shark)
 om = ObstacleM(background)
 fm = Food_move(background)
 sm = Ship(background)
@@ -290,7 +289,7 @@ def game_loop():
                     wf.write(str(player.CumulativeScore))
                     print("Congratulations, You Beat the Highest Score !")
             wf.close()
-            player = Player(background, 200, 200, shark)
+            player = Player(background, 200, 600, shark)
             reset_game()
             level =1
             limit = 0
@@ -320,7 +319,7 @@ def game_loop():
         clock.tick(fps)
         pygame.display.update()
     if condition:
-        player = Player(background, 200, 200, shark)
+        player = Player(background, 200, 600, shark)
         reset_game()
         level =1
         limit = 0
@@ -422,6 +421,7 @@ def game_loop2():
     my = 0
     speed = 10
     main= True
+   
     while main:
         background = pygame.image.load(back).convert()
         background = pygame.transform.scale(background, (worldx, worldy), screen)
@@ -433,9 +433,10 @@ def game_loop2():
                 main = False
             if event.type == pygame.KEYDOWN:
                 if event.key == ord('q'):
-                    pygame.quit()
-                    sys.exit()
-                    main = False
+                    if SecM():
+                        condition=True
+                        main=False
+                        break
             if event.type == pygame.KEYDOWN:
                 if event.key == ord('a'):
                     player.shark(shark1)
@@ -463,6 +464,9 @@ def game_loop2():
                         mx = 0
         player.check_status(sm.bullte)
         if player.lives <= 0:
+            player = Player(background, 200, 600, shark)
+            sm.clean()
+            gameOver()
             break
         sm.move()
         sm.draw()
@@ -478,7 +482,7 @@ def game_loop2():
         dt = 1.0 / float(fps)
         clock.tick(fps)
         pygame.display.update()        
-pre_intro()
+#pre_intro()
 
 game_intro()
 #gameOver()
