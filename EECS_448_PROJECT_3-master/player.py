@@ -97,11 +97,14 @@ class Player:
         :pre: There is array of food
         :post: Give the game's status
         """
+        eaT=pygame.mixer.Sound("sounds/eat.wav")
+        eaT.set_volume(10)
         for j in food_list:
             if j.lives > 0:
                 temp = self.get_distance(j.get_center())
                 if temp <= sharksize / 2 + j.get_radius():
                     self.lives = 1
+                    pygame.mixer.Sound.play(eaT)
                     self.score += 1
                     self.CumulativeScore += 1
                     j.lives = 0

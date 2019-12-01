@@ -3,7 +3,7 @@ import sys
 import os
 import time
 from player import Player
-from pygame.locals import  FULLSCREEN
+from pygame.locals import FULLSCREEN
 from obstacle import ObstacleM
 from buttom import buttom
 from food import Food_move
@@ -20,7 +20,9 @@ worldy = 720
 fps = 60
 level = 1
 limit = 0
+
 pygame.init()
+pygame.mixer.init()
 clock = pygame.time.Clock()
 # images
 back = 'image/backbord.jpg'
@@ -28,6 +30,14 @@ shark = 'image/icon.png'
 shark1 = 'image/flip.png'
 intro_backg = 'image/shark.jpg'
 intro_backg2 = 'image/introb.jpeg'
+# sounds/music
+main_sound = 'sounds/10 Arpanauts.mp3'
+game_mode2 = 'sounds/01 A Night Of Dizzy Spells.mp3'
+game_mode1 = 'sounds/03 Chibi Ninja.mp3'
+selection_m = pygame.mixer.Sound("sounds/Pop.wav")
+selection_m2 = pygame.mixer.Sound("sounds/da.wav")
+ding = pygame.mixer.Sound("sounds/ding.wav")
+end = pygame.mixer.Sound("sounds/end.wav")
 # screen set up
 screen = pygame.display.set_mode((worldx, worldy), FULLSCREEN)
 # background set up
@@ -42,14 +52,13 @@ pygame.display.set_icon(icon)
 def pre_intro():
     intro = pygame.image.load(intro_backg).convert()
 
-    backg=pygame.Surface((worldx,worldy))
-    font=pygame.font.SysFont('Arial',20,True,True)
+    backg = pygame.Surface((worldx, worldy))
+    font = pygame.font.SysFont('Arial', 20, True, True)
 
-    text=font.render('Shake Shark Present ©',True,(255,255,255))
+    text = font.render('Shake Shark Present ©', True, (255, 255, 255))
 
-
-    i=1
-    run=True
+    i = 1
+    run = True
     while run:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -58,17 +67,15 @@ def pre_intro():
 
         intro.set_alpha(i)
 
-        screen.blit(backg,backg.get_rect())
-        screen.blit(intro, (100,100))
-        screen.blit(text,(390,550))
+        screen.blit(backg, backg.get_rect())
+        screen.blit(intro, (100, 100))
+        screen.blit(text, (390, 550))
         pygame.time.delay(16)
 
-        i+=1
-        if(i==225):
-            run=False
+        i += 1
+        if(i == 225):
+            run = False
         pygame.display.update()
-
-
 
 
 # game intro
@@ -82,6 +89,11 @@ def game_intro():
     buttom4 = buttom(430, 455, 100, 50, (255, 255, 255), 'Start2')
     intro_scp = pygame.image.load(intro_backg2).convert()
     x = 0
+    pygame.mixer.music.load(main_sound)
+    pygame.mixer.music.set_volume(0.2)
+    pygame.mixer.music.play(-1)
+    selection_m.set_volume(0.8)
+    pygame.time.delay(20)
     while intro:
 
         for event in pygame.event.get():
@@ -93,34 +105,45 @@ def game_intro():
                 quit()
             if event.type == pygame.MOUSEMOTION:
                 if buttom1.ontop(position):
+
                     buttom1.color = (255, 255, 0)
                 else:
                     buttom1.color = (255, 255, 255)
 
                 if buttom2.ontop(position):
+
                     buttom2.color = (255, 255, 0)
                 else:
                     buttom2.color = (255, 255, 255)
 
                 if buttom3.ontop(position):
+
                     buttom3.color = (255, 255, 0)
                 else:
                     buttom3.color = (255, 255, 255)
                 if buttom4.ontop(position):
+
                     buttom4.color = (255, 255, 0)
                 else:
-                    buttom4.color = (255, 255, 255)    
+                    buttom4.color = (255, 255, 255)
 
             if event.type == pygame.MOUSEBUTTONDOWN and buttom1.ontop(position):
+                pygame.mixer.Sound.play(selection_m)
+                pygame.mixer.music.stop()
                 game_loop()
-                 
+                pygame.mixer.music.play(-1)
             if event.type == pygame.MOUSEBUTTONDOWN and buttom2.ontop(position):
+                pygame.mixer.Sound.play(selection_m)
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN and buttom3.ontop(position):
+                pygame.mixer.Sound.play(selection_m)
                 highScore()
             if event.type == pygame.MOUSEBUTTONDOWN and buttom4.ontop(position):
+                pygame.mixer.Sound.play(selection_m)
+                pygame.mixer.music.stop()
                 game_loop2()
+                pygame.mixer.music.play(-1)
         rel_x = x % intro_scp.get_rect().height
         screen.blit(intro_scp, (0, rel_x - intro_scp.get_rect().height))
         if rel_x < worldy:
@@ -155,6 +178,7 @@ def text_object(text, font):
     textSurface = font.render(text, True, blue)
     return textSurface, textSurface.get_rect()
 
+
 def message_display(text):
     largeText = pygame.font.Font('freesansbold.ttf', 70)
     TextSurf, TextRect = text_object(text, largeText)
@@ -172,8 +196,7 @@ def highScore():
         f_content = str(f_content)
 
     screen.fill(white)
-    message_display('Highest Score: '+ f_content + 'pts')
-
+    message_display('Highest Score: ' + f_content + 'pts')
 
 
 def get_level():
@@ -199,8 +222,7 @@ def reset_game():
     player.score = 0
     om.delete()
     fm.delete()
-    limit =0
-
+    limit = 0
 
 
 def draw():
@@ -210,12 +232,15 @@ def draw():
     :pre: player hit start button on the main menu screen
     :post: Display necessary information
     """
-    score_display = fonts[16].render("Scores: " + str(max([player.score, 0])), True, (0, 0, 0))
+    score_display = fonts[16].render(
+        "Scores: " + str(max([player.score, 0])), True, (0, 0, 0))
     screen.blit(score_display, (10, 25))
-    level_display = fonts[16].render("Level: " + str(get_level()), True, (0, 0, 0))
+    level_display = fonts[16].render(
+        "Level: " + str(get_level()), True, (0, 0, 0))
     screen.blit(level_display, (10, 10))
     next_level = fonts[16].render(
-        "Get into Next Level Needs to Score " + str(5 * get_level() - max([player.score, 0])) + " More Points",
+        "Get into Next Level Needs to Score " +
+        str(5 * get_level() - max([player.score, 0])) + " More Points",
         True, (0, 0, 0))
     screen.blit(next_level, (10, 40))
     pygame.display.flip()
@@ -229,14 +254,18 @@ def game_loop():
     mx = 0
     my = 0
     speed = 3
-    global shark,limit,level
-    condition=False
-
+    global shark, limit, level
+    condition = False
+    pygame.mixer.music.load(game_mode1)
+    pygame.mixer.music.play(-1)
+    pygame.mixer.music.set_volume(0.1)
     main = True
+    pygame.time.delay(20)
     while main:
 
         background = pygame.image.load(back).convert()
-        background = pygame.transform.scale(background, (worldx, worldy), screen)
+        background = pygame.transform.scale(
+            background, (worldx, worldy), screen)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -245,10 +274,14 @@ def game_loop():
                 main = False
             if event.type == pygame.KEYDOWN:
                 if event.key == ord('q'):
+                    pygame.mixer.music.pause()
+                    pygame.mixer.Sound.play(ding)
                     if SecM():
-                        condition=True
-                        main=False
+                        condition = True
+                        main = False
                         break
+                    else:
+                        pygame.mixer.music.unpause()
             if event.type == pygame.KEYDOWN:
                 if event.key == ord('a'):
                     player.shark(shark1)
@@ -277,7 +310,7 @@ def game_loop():
         player.check_status(om.list)
         if player.lives <= 0:
             print("You lose your shark!")
-            
+
             with open('ScoreRanking.txt', 'r') as rf:
                 HighestScore = rf.read()
                 HighestScore = int(HighestScore)
@@ -291,12 +324,12 @@ def game_loop():
             wf.close()
             player = Player(background, 200, 600, shark)
             reset_game()
-            level =1
+            level = 1
             limit = 0
+            pygame.mixer.music.stop()
             gameOver()
             break
-            
-            
+
         player.check_food(fm.food_list)
 
         # Starting update obstacle
@@ -321,12 +354,13 @@ def game_loop():
     if condition:
         player = Player(background, 200, 600, shark)
         reset_game()
-        level =1
+        level = 1
         limit = 0
-        
-def SecM ():
-    main=True
-    screen.fill([255,255,255])
+
+
+def SecM():
+    main = True
+    screen.fill([255, 255, 255])
     buttom1 = buttom(430, 375, 160, 50, (255, 255, 255), 'Continue')
     buttom2 = buttom(430, 455, 100, 50, (255, 255, 255), 'Quit')
     buttom3 = buttom(350, 535, 260, 50, (255, 255, 255), 'Return to Menu')
@@ -357,15 +391,18 @@ def SecM ():
                     buttom3.color = (255, 255, 0)
                 else:
                     buttom3.color = (255, 255, 255)
-            
+
             if event.type == pygame.MOUSEBUTTONDOWN and buttom1.ontop(position):
+                pygame.mixer.Sound.play(selection_m2)
                 main = False
-                
+
             if event.type == pygame.MOUSEBUTTONDOWN and buttom2.ontop(position):
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN and buttom3.ontop(position):
-                main=False
+                pygame.mixer.Sound.play(selection_m2)
+                pygame.mixer.music.load(main_sound)
+                main = False
                 return True
         buttom0.draw(screen)
         buttom1.draw(screen)
@@ -374,14 +411,16 @@ def SecM ():
         pygame.display.flip()
 
     return False
+
+
 def gameOver():
-    main=True
-    screen.fill([255,255,255])
+    main = True
+    screen.fill([255, 255, 255])
     #buttom1 = buttom(430, 375, 160, 50, (255, 255, 255), 'Continue')
     buttom2 = buttom(430, 455, 100, 50, (255, 255, 255), 'Quit')
     buttom3 = buttom(350, 535, 260, 50, (255, 255, 255), 'Return to Menu')
     buttom0 = buttom(360, 255, 250, 50, (255, 255, 255), 'Game Over !')
-
+    pygame.mixer.Sound.play(end)
     while main:
         for event in pygame.event.get():
             position = pygame.mouse.get_pos()
@@ -394,7 +433,6 @@ def gameOver():
                     pygame.quit()
                     sys.exit()
             if event.type == pygame.MOUSEMOTION:
-                
 
                 if buttom2.ontop(position):
                     buttom2.color = (255, 255, 0)
@@ -403,28 +441,34 @@ def gameOver():
                 if buttom3.ontop(position):
                     buttom3.color = (255, 255, 0)
                 else:
-                    buttom3.color = (255, 255, 255)    
+                    buttom3.color = (255, 255, 255)
             if event.type == pygame.MOUSEBUTTONDOWN and buttom2.ontop(position):
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN and buttom3.ontop(position):
-                main=False
-               
+                pygame.mixer.Sound.play(selection_m2)
+                pygame.mixer.music.load(main_sound)
+                main = False
+
         buttom0.draw(screen)
-      
         buttom2.draw(screen)
         buttom3.draw(screen)
         pygame.display.flip()
+
+
 def game_loop2():
     global background, player
     mx = 0
     my = 0
     speed = 10
-    main= True
-   
+    main = True
+    pygame.mixer.music.load(game_mode2)
+    pygame.mixer.music.play(-1)
+    pygame.time.delay(20)
     while main:
         background = pygame.image.load(back).convert()
-        background = pygame.transform.scale(background, (worldx, worldy), screen)
+        background = pygame.transform.scale(
+            background, (worldx, worldy), screen)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -433,10 +477,16 @@ def game_loop2():
                 main = False
             if event.type == pygame.KEYDOWN:
                 if event.key == ord('q'):
+                    pygame.mixer.music.pause()
+                    pygame.mixer.Sound.play(ding)
                     if SecM():
-                        condition=True
-                        main=False
+                        # pygame.mixer.music.stop()
+                        condition = True
+                        main = False
                         break
+                    else:
+                        pygame.mixer.music.unpause()
+
             if event.type == pygame.KEYDOWN:
                 if event.key == ord('a'):
                     player.shark(shark1)
@@ -466,6 +516,7 @@ def game_loop2():
         if player.lives <= 0:
             player = Player(background, 200, 600, shark)
             sm.clean()
+            pygame.mixer.music.stop()
             gameOver()
             break
         sm.move()
@@ -473,7 +524,7 @@ def game_loop2():
         sm.fire()
         sm.update_b()
         sm.draw_b()
-        if player.y <=100 and my <0:
+        if player.y <= 100 and my < 0:
             player.move(mx, 0)
         else:
             player.move(mx, my)
@@ -481,10 +532,11 @@ def game_loop2():
         pygame.display.flip()
         dt = 1.0 / float(fps)
         clock.tick(fps)
-        pygame.display.update()        
-#pre_intro()
+        pygame.display.update()
+# pre_intro()
+
 
 game_intro()
-#gameOver()
-#game_loop()
+# gameOver()
+# game_loop()
 pygame.quit()
