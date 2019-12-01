@@ -516,6 +516,9 @@ def game_loop2():
                     mx = speed
                 if event.key == ord('s'):
                     my = speed
+                if event.key == ord('p'):
+                    my = 0
+                    mx = 0
             if event.type == pygame.KEYUP:
                 if event.key == ord('a'):
                     if mx == -speed:
