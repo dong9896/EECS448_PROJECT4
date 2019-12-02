@@ -601,8 +601,8 @@ def game_loop2():
 # pre_intro()
 
         clock.tick(60)
-        times +=1
-        if times == 30:
+        times +=2
+        if times == 34:
             timex -= 1
             times = 0
         time_display = fonts[32].render(str(timex), True, (0, 0, 0))
