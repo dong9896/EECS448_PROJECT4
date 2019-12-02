@@ -53,7 +53,7 @@ class Player:
         """
         Renders the img of shark(For project 3, black circle stands for shark)
         """
-        print(self.x,self.y)
+        #print(self.x,self.y)
         self._master.blit(self.image, (self.x, self.y))
 
     def get_center(self):
