@@ -177,11 +177,22 @@ check = False
 
 
 def text_object(text, font):
+    """
+    :return: textSurface
+    :pre: none
+    :post: none
+    """
     textSurface = font.render(text, True, blue)
     return textSurface, textSurface.get_rect()
 
 
 def message_display(text):
+    """
+    Click the Score Board button on menu, it displays the highest score ever
+    :return: none
+    :pre: player has ever played once
+    :post: none
+    """
     largeText = pygame.font.Font('freesansbold.ttf', 70)
     TextSurf, TextRect = text_object(text, largeText)
     TextRect.center = (display_width/2, display_height/2)
@@ -193,6 +204,12 @@ def message_display(text):
 
 
 def highScore():
+    """
+    Read the score on txt file and store the value into message_display()
+    :return: none
+    :pre: player has ever played once
+    :post: none
+    """
     with open('ScoreRanking.txt', 'r') as f:
         f_content = f.read()
         f_content = str(f_content)
@@ -324,7 +341,6 @@ def game_loop():
         player.check_status(om.list)
         if player.lives <= 0:
             print("You lose your shark!")
-
             with open('ScoreRanking.txt', 'r') as rf:
                 HighestScore = rf.read()
                 HighestScore = int(HighestScore)
