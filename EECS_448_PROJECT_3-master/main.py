@@ -314,6 +314,9 @@ def game_loop():
                     else:
                         pygame.mixer.music.unpause()
             if event.type == pygame.KEYDOWN:
+                if event.key == ord('p'):
+                    mx = 0
+                    my = 0
                 if event.key == ord('a'):
                     player.shark(shark1)
                     mx = -speed
@@ -522,6 +525,9 @@ def game_loop2():
                         pygame.mixer.music.unpause()
 
             if event.type == pygame.KEYDOWN:
+                if event.key == ord('p'):
+                    mx = 0
+                    my = 0
                 if event.key == ord('a'):
                     player.shark(shark1)
                     mx = -speed
