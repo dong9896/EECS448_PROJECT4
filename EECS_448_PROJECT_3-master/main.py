@@ -485,6 +485,7 @@ def game_loop2():
     main= True
     times= 0
     timex =60
+    condition =False
     while main:
         background = pygame.image.load(back).convert()
         background = pygame.transform.scale(
@@ -577,6 +578,9 @@ def game_loop2():
         dt = 1.0 / float(fps)
         clock.tick(fps)
         pygame.display.update()
+    if condition:
+        player = Player(background, 200, 600, shark)
+        sm.clean()
 # pre_intro()
 
         clock.tick(60)
