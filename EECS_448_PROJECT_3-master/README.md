@@ -2,7 +2,8 @@
 # Hungry Shark
 README:
 
-Build included in repository can run both on Windows and Mac with Python 3.7
+Build included in repository can run both on Windows and Mac with Python 3.8.1
+(If your version is below 3.8.1, the Score Board might not work on your machine)
 
 ## Setup
 To install necessary dependencies run:
