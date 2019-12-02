@@ -597,9 +597,7 @@ def game_loop2():
         dt = 1.0 / float(fps)
         clock.tick(fps)
         pygame.display.update()
-    if condition:
-        player = Player(background, 200, 600, shark)
-        sm.clean()
+
 # pre_intro()
 
         clock.tick(60)
@@ -609,7 +607,9 @@ def game_loop2():
             times = 0
         time_display = fonts[32].render(str(timex), True, (0, 0, 0))
         screen.blit(time_display, (450, 25))
-
+        if condition:
+            player = Player(background, 200, 600, shark)
+            sm.clean()
         pygame.display.update()
 
 
